@@ -1,0 +1,18 @@
+# Regras udev prioritárias (< 73) para mesa digitalizadora Ugee M708 no Linux (Wayland / GNOME)
+# Executa antes de 73-seat-late.rules para garantir aplicação da tag uaccess e permissões de usuário
+# Suporta PIDs: 0907, 0924, 0927 (Vendor ID: 28bd)
+
+# 1. Permissões de acesso aos nós hidraw da mesa
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0907", MODE="0666", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0924", MODE="0666", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0927", MODE="0666", TAG+="uaccess"
+
+# 2. Permissões para comunicação USB direta
+SUBSYSTEM=="usb", ATTRS{idVendor}=="28bd", MODE="0666", TAG+="uaccess"
+
+# 3. Permissões para /dev/uinput
+KERNEL=="uinput", SUBSYSTEM=="misc", MODE="0666", TAG+="uaccess", OPTIONS+="static_node=uinput"
+
+# 4. Classificação dos nós virtuais do uinput para integração nativa no GNOME Wayland (libwacom / Mutter)
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="UGEE M708 Pen", ENV{ID_INPUT}="1", ENV{ID_INPUT_TABLET}="1"
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="UGEE M708 Pad", ENV{ID_INPUT}="1", ENV{ID_INPUT_TABLET_PAD}="1"

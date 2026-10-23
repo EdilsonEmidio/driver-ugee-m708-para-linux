@@ -24,7 +24,7 @@ sudo update-desktop-database /usr/share/applications 2>/dev/null || true
 
 sudo rm -f /usr/local/bin/ugee_m708_driver.py /usr/local/bin/ugee_m708_gui.py
 sudo rm -rf /usr/local/share/ugee-m708
-sudo rm -f /etc/udev/rules.d/99-ugee-m708.rules
+sudo rm -f /etc/udev/rules.d/60-ugee-m708.rules /etc/udev/rules.d/99-ugee-m708.rules
 sudo rm -f /etc/libwacom/ugee-m708.tablet
 sudo udevadm control --reload-rules
 sudo udevadm trigger

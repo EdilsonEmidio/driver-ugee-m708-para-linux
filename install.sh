@@ -61,9 +61,10 @@ sudo gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
 update-desktop-database "${HOME}/.local/share/applications" 2>/dev/null || true
 sudo update-desktop-database /usr/share/applications 2>/dev/null || true
 
-# 4. Instala as regras do udev
-echo "[4/7] Configurando regras udev em /etc/udev/rules.d/99-ugee-m708.rules..."
-sudo cp "${SCRIPT_DIR}/99-ugee-m708.rules" /etc/udev/rules.d/99-ugee-m708.rules
+# 4. Instala as regras prioritárias do udev (< 73 para executar antes de 73-seat-late)
+echo "[4/7] Configurando regras udev em /etc/udev/rules.d/60-ugee-m708.rules..."
+sudo rm -f /etc/udev/rules.d/99-ugee-m708.rules
+sudo cp "${SCRIPT_DIR}/60-ugee-m708.rules" /etc/udev/rules.d/60-ugee-m708.rules
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 

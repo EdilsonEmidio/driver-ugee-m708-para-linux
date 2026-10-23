@@ -65,7 +65,7 @@ O script cuidará de:
 * Instalar pacotes necessários (`python3-evdev`, `python3-gi`, `python3-gi-cairo`, `gir1.2-gtk-4.0`, `gir1.2-adw-1`).
 * Copiar executáveis para `/usr/local/bin/`.
 * Instalar o ícone da Ugee em todas as resoluções e o atalho `.desktop` no Menu Iniciar.
-* Configurar permissões `udev` em `/etc/udev/rules.d/99-ugee-m708.rules`.
+* Configurar permissões `udev` em `/etc/udev/rules.d/60-ugee-m708.rules`.
 * Instalar a definição `libwacom` em `/etc/libwacom/ugee-m708.tablet`.
 * Habilitar e iniciar o serviço `systemd --user ugee-m708.service`.
 

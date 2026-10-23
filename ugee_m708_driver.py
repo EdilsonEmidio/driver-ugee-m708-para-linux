@@ -575,21 +575,23 @@ def main():
 
             max_pressure = 16383 if pid == 0x0927 else 8191
             max_x, max_y = 50800, 30480
-            state.update({
-                "connected": True,
-                "pid": pid,
-                "hidraw": hidraw_path,
-                "max_x": max_x,
-                "max_y": max_y,
-                "max_pressure": max_pressure,
-            })
-            print(f"Conectado à Ugee M708 (PID 0x{pid:04X}) em {hidraw_path}")
-            ipc.broadcast_telemetry(state, force=True)
 
-            pen, pad, kbd = create_uinput_devices(pid, max_x=max_x, max_y=max_y, max_pressure=max_pressure)
             fd = None
+            pen = None
+            pad = None
+            kbd = None
             try:
-                fd = os.open(hidraw_path, os.O_RDWR | os.O_NONBLOCK)
+                try:
+                    fd = os.open(hidraw_path, os.O_RDWR | os.O_NONBLOCK)
+                except OSError as ex:
+                    state["connected"] = False
+                    state["pid"] = 0
+                    state["hidraw"] = ""
+                    ipc.broadcast_telemetry(state, force=True)
+                    print(f"Aviso: Não foi possível abrir {hidraw_path} ({ex}). Verifique as permissões udev.")
+                    time.sleep(1.5)
+                    continue
+
                 try:
                     os.write(fd, bytes([0x02, 0xB0, 0x04] + [0x00] * 7))
                 except OSError:
@@ -597,6 +599,19 @@ def main():
                         os.write(fd, bytes([0x02, 0xB0, 0x04] + [0x00] * 17))
                     except OSError as ex:
                         print(f"Aviso ao enviar init report: {ex}")
+
+                state.update({
+                    "connected": True,
+                    "pid": pid,
+                    "hidraw": hidraw_path,
+                    "max_x": max_x,
+                    "max_y": max_y,
+                    "max_pressure": max_pressure,
+                })
+                print(f"Conectado com sucesso à Ugee M708 (PID 0x{pid:04X}) em {hidraw_path}")
+                ipc.broadcast_telemetry(state, force=True)
+
+                pen, pad, kbd = create_uinput_devices(pid, max_x=max_x, max_y=max_y, max_pressure=max_pressure)
 
                 in_proximity = False
                 current_tool = e.BTN_TOOL_PEN
@@ -864,9 +879,12 @@ def main():
                         os.close(fd)
                     except Exception:
                         pass
-                pen.close()
-                pad.close()
-                kbd.close()
+                if pen is not None:
+                    pen.close()
+                if pad is not None:
+                    pad.close()
+                if kbd is not None:
+                    kbd.close()
     finally:
         ipc.close()
 
