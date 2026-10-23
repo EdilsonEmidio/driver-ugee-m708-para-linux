@@ -1,0 +1,21 @@
+# Definição libwacom para Ugee M708
+# Permite que o GNOME Wayland configure a mesa nativamente no painel de Configurações
+
+[Device]
+Name=UGEE M708
+ModelName=M708
+DeviceMatch=usb:28bd:0907;usb:28bd:0924;usb:28bd:0927
+Class=Bamboo
+Width=10
+Height=6
+Layout=ugee-m708.svg
+
+[Features]
+Stylus=true
+Reversible=true
+Touch=false
+Buttons=8
+
+[Buttons]
+Left=A;B;C;D;E;F;G;H
+EvdevCodes=0x100;0x101;0x102;0x103;0x104;0x105;0x106;0x107

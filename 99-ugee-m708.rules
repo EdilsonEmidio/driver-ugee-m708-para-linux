@@ -1,0 +1,20 @@
+# Regras udev para mesa digitalizadora Ugee M708 no Linux (Wayland / GNOME)
+# Suporta PIDs: 0907, 0924, 0927 (Vendor ID: 28bd)
+
+# 1. Permissões de acesso aos nós hidraw para o usuário da sessão ativa
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0907", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0924", MODE="0660", TAG+="uaccess"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0927", MODE="0660", TAG+="uaccess"
+
+# 2. Permissões para /dev/uinput
+KERNEL=="uinput", SUBSYSTEM=="misc", MODE="0660", GROUP="input", TAG+="uaccess"
+
+# 3. Faz o libinput ignorar as interfaces de entrada USB físicas originais
+# para evitar cliques duplos e conflito de eventos com o daemon virtual
+SUBSYSTEM=="input", SUBSYSTEMS=="usb", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0907", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+SUBSYSTEM=="input", SUBSYSTEMS=="usb", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0924", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+SUBSYSTEM=="input", SUBSYSTEMS=="usb", ATTRS{idVendor}=="28bd", ATTRS{idProduct}=="0927", ENV{LIBINPUT_IGNORE_DEVICE}="1"
+
+# 4. Classifica os nós virtuais do uinput para integração nativa no GNOME Wayland
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="UGEE M708 Pen", ENV{ID_INPUT}="1", ENV{ID_INPUT_TABLET}="1"
+SUBSYSTEM=="input", KERNEL=="event*", ATTRS{name}=="UGEE M708 Pad", ENV{ID_INPUT}="1", ENV{ID_INPUT_TABLET_PAD}="1"

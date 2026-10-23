@@ -1,0 +1,20 @@
+# Python bytecode e caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos temporários e backups da engenharia reversa do driver Windows
+extracted/
+ugee_Win_4.3.6.250305/
+*.zip
+*.rar
+*.exe
+*.dll
+*.sys
+*.cat
+
+# Configurações locais / temporários
+*.sock
+.DS_Store
+*~
+*.swp

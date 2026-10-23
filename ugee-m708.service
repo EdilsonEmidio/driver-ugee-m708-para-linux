@@ -1,0 +1,11 @@
+[Unit]
+Description=Driver User-Space Ugee M708 para Linux (Wayland / GNOME)
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/local/bin/ugee_m708_driver.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

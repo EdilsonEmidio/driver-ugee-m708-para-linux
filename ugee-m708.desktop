@@ -1,0 +1,16 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Ugee M708 Tablet
+Name[pt_BR]=Mesa Digitalizadora Ugee M708
+GenericName=Graphics Tablet Settings
+GenericName[pt_BR]=Configurações da Mesa Digitalizadora
+Comment=Configure active area, pressure curve and shortcut keys for the Ugee M708 tablet
+Comment[pt_BR]=Configure a área ativa, curva de pressão da caneta e teclas de atalho (K1-K8) da Ugee M708
+Exec=/usr/local/bin/ugee_m708_gui.py
+Icon=ugee-m708
+Terminal=false
+Categories=Settings;HardwareSettings;Graphics;GTK;
+Keywords=tablet;ugee;m708;stylus;pen;wacom;mesa;digitalizadora;caneta;
+StartupNotify=true
+StartupWMClass=com.ugee.m708.settings
